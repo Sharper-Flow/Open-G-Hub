@@ -90,6 +90,12 @@ jobs:
         run: cargo build --release -p open-g-hub-cli
       - name: Build release (GUI)
         run: cargo build --release -p open-g-hub-gui
+      - name: Create portable Windows executable
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path dist -Force | Out-Null
+          Copy-Item target/release/open-g-hub-gui.exe dist/Open-G-Hub-Windows-Portable.exe -Force
       - name: Upload CLI artifact
         uses: actions/upload-artifact@v4
         with:
@@ -100,3 +106,9 @@ jobs:
         with:
           name: gui-${{ matrix.os }}
           path: target/release/${{ matrix.artifact_gui }}
+      - name: Upload portable Windows artifact
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Open-G-Hub-Windows-Portable
+          path: dist/Open-G-Hub-Windows-Portable.exe

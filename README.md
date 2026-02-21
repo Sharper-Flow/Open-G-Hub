@@ -65,6 +65,23 @@ cargo build --release
 ./target/release/open-g-hub-gui
 ```
 
+## Windows one-file portable executable
+
+You can run Open G Hub on Windows as a single portable `.exe` (no installer required):
+
+- Download artifact: `Open-G-Hub-Windows-Portable.exe` from GitHub Actions artifacts/releases
+- Run directly
+
+For local build on Windows:
+
+```powershell
+scripts\build-windows-portable.ps1
+```
+
+Output:
+
+- `dist\Open-G-Hub-Windows-Portable.exe`
+
 ## Windows setup (Zadig / WinUSB)
 
 Windows typically blocks direct HID access with the default mouse driver stack, so a one-time WinUSB setup is required.
