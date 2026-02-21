@@ -1,0 +1,15 @@
+[package]
+name = "open-g-hub-cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "CLI tool for mouse configuration"
+
+[dependencies]
+open-g-hub-core = { path = "../core" }
+clap = { workspace = true }
+anyhow = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+serde_json = { workspace = true }
+hidapi = { workspace = true }

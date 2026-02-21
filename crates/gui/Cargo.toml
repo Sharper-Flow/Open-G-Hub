@@ -1,0 +1,13 @@
+[package]
+name = "open-g-hub-gui"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "GUI application for mouse configuration using iced"
+
+[dependencies]
+open-g-hub-core = { path = "../core" }
+iced = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+tokio = { workspace = true }
