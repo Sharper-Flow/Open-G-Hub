@@ -1,118 +1,132 @@
-# Open G Hub
+<p align="center">
+  <img src="assets/banner.svg" alt="Open G Hub banner" width="100%" />
+</p>
 
-Open-source cross-platform replacement for Logitech G Hub mouse configuration software.
+<p align="center">
+  <a href="https://github.com/Sharper-Flow/Open-G-Hub/actions/workflows/ci.yml">
+    <img src="https://img.shields.io/github/actions/workflow/status/Sharper-Flow/Open-G-Hub/ci.yml?branch=main&label=CI" alt="CI status" />
+  </a>
+  <a href="https://github.com/Sharper-Flow/Open-G-Hub/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/Sharper-Flow/Open-G-Hub" alt="License" />
+  </a>
+  <img src="https://img.shields.io/badge/Rust-2021-000000?logo=rust" alt="Rust 2021" />
+  <img src="https://img.shields.io/badge/Platforms-Windows%20%7C%20Linux-2ea44f" alt="Windows and Linux" />
+</p>
 
-Communicates directly with Logitech G mice via HID++ 2.0 protocol over USB HID. No cloud. No telemetry. No bloat.
+<h1 align="center">Open G Hub</h1>
+
+<p align="center">
+  Open-source replacement for Logitech G Hub mouse configuration.<br/>
+  Direct HID++ 2.0 control, local-first, and no telemetry.
+</p>
+
+## Why this project exists
+
+`Open G Hub` focuses on practical mouse configuration without a heavyweight companion app. It communicates with Logitech devices over USB HID using HID++ 2.0 and exposes both CLI and GUI workflows.
+
+## Current status
+
+- Device focus: `Logitech G502 Lightspeed` and `G502 HERO`
+- Core functionality: DPI, polling rate, button remapping, onboard profile controls
+- Build targets: Linux + Windows
+- Safety model: bounds checks and explicit HID++ feature whitelist
+- Storage policy: legacy `open-g-hub/profile.json` is removed; persistence targets Logitech G Hub storage contract
 
 ## Features
 
-- **DPI configuration** (100-25,600, step 50) via HID++ ADJUSTABLE_DPI (0x2201)
-- **Polling rate** (125/250/500/1000 Hz) via HID++ REPORT_RATE (0x8060)
-- **Button remapping** (6 programmable buttons) via HID++ REPROG_CONTROLS_V4 (0x1B04)
-- **Onboard profile** management via HID++ ONBOARD_PROFILES (0x8100)
-- **Profile persistence target**: Logitech G Hub storage contract (legacy `open-g-hub/profile.json` removed)
-- **Safety validation** (all writes bounds-checked before reaching device)
-- **Structured logging** (tracing crate, `RUST_LOG` env var)
+- DPI configuration (`100-25,600`, step `50`) via `ADJUSTABLE_DPI (0x2201)`
+- Polling rate control (`125/250/500/1000 Hz`) via `REPORT_RATE (0x8060)`
+- Button remapping (`6` programmable buttons) via `REPROG_CONTROLS_V4 (0x1B04)`
+- Onboard profile mode/control via `ONBOARD_PROFILES (0x8100)`
+- Structured diagnostics with `tracing` and `RUST_LOG`
 
-## Supported Devices
+## Supported devices
 
 | Device | VID | PID | Status |
 |--------|-----|-----|--------|
-| G502 Lightspeed | 0x046D | 0xC08D | Supported |
-| G502 HERO | 0x046D | 0xC08B | Supported |
+| G502 Lightspeed | `0x046D` | `0xC08D` | Supported |
+| G502 HERO | `0x046D` | `0xC08B` | Supported |
 
-## Installation
-
-### From Source
+## Quick start
 
 ```bash
-# Prerequisites: Rust toolchain
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-
-# Clone and build
-git clone https://github.com/user/open-g-hub.git
-cd open-g-hub
+git clone https://github.com/Sharper-Flow/Open-G-Hub.git
+cd Open-G-Hub
 cargo build --release
 
-# Run CLI
-./target/release/open-g-hub-cli list-devices
+# CLI
+./target/release/open-g-hub-cli --help
 
-# Run GUI
+# GUI
 ./target/release/open-g-hub-gui
 ```
 
-### Linux: udev Rules
+## Windows setup (Zadig / WinUSB)
 
-Create `/etc/udev/rules.d/99-logitech-g502.rules`:
+Windows typically blocks direct HID access with the default mouse driver stack, so a one-time WinUSB setup is required.
 
-```
-SUBSYSTEM=="hidraw", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c08d", MODE="0666"
-SUBSYSTEM=="hidraw", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c08b", MODE="0666"
-```
+Trust and source references:
+- Official Zadig website: [zadig.akeo.ie](https://zadig.akeo.ie/)
+- Zadig source code: [github.com/pbatard/zadig](https://github.com/pbatard/zadig)
+- libwdi (driver backend): [github.com/pbatard/libwdi](https://github.com/pbatard/libwdi)
 
-Then reload: `sudo udevadm control --reload-rules && sudo udevadm trigger`
-
-### Windows: Driver Setup
-
-Windows requires a one-time Zadig/WinUSB driver installation for HID access.
-
-**About Zadig:**
-- Official website: [zadig.akeo.ie](https://zadig.akeo.ie/)
-- Source code: [github.com/pbatard/zadig](https://github.com/pbatard/zadig)
-- Open-source (GPLv3), widely trusted for USB driver installation
-- Used by projects like [libusb](https://libusb.info/), [OpenOCD](https://openocd.org/), and many others
-
-**Quick setup** (PowerShell as Administrator):
+Quick setup (PowerShell as Administrator):
 
 ```powershell
 .\scripts\install-winusb-driver.ps1
 ```
 
-Or follow the manual steps in [TROUBLESHOOTING.md](TROUBLESHOOTING.md).
+Manual fallback and recovery instructions are in `TROUBLESHOOTING.md`.
 
-## Usage
-
-### CLI
+## CLI usage
 
 ```bash
-open-g-hub-cli list-devices         # Find connected mice
-open-g-hub-cli set-dpi 1600         # Set DPI
-open-g-hub-cli set-rate 1000        # Set polling rate (Hz)
-open-g-hub-cli set-button 0 right   # Remap button 0 to right-click
-open-g-hub-cli save-profile         # Save current settings
-open-g-hub-cli load-profile         # Load saved settings
+open-g-hub-cli list-devices
+open-g-hub-cli get-dpi
+open-g-hub-cli set-dpi 1600
+open-g-hub-cli get-rate
+open-g-hub-cli set-rate 1000
+open-g-hub-cli get-buttons
+open-g-hub-cli set-button 0 right
 ```
 
-### GUI
+## Project layout
 
-Launch `open-g-hub-gui` for a graphical interface with:
-- DPI slider (100-25,600)
-- Polling rate dropdown
-- Button mapping grid
-- Device status polling (2s interval)
-- Profile save/load
-
-## Architecture
-
-```
+```text
 open-g-hub/
   crates/
-    core/    # HID++ protocol, device discovery, safety validation
-    gui/     # iced desktop app (Elm architecture)
-    cli/     # clap command-line tool
+    core/  # HID++ protocol, transport, safety, persistence layer
+    gui/   # iced desktop app
+    cli/   # clap command-line app
+  assets/
+  docs/
+  scripts/
 ```
 
-See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed design.
+More detail: `ARCHITECTURE.md`
 
 ## Development
 
 ```bash
-cargo test              # Run all 75 tests
-cargo clippy            # Lint
-cargo fmt               # Format
-RUST_LOG=trace cargo run -p open-g-hub-cli -- list-devices  # Debug logging
+cargo test
+cargo clippy -- -D warnings
+cargo fmt --all -- --check
 ```
+
+For tracing:
+
+```bash
+RUST_LOG=trace cargo run -p open-g-hub-cli -- list-devices
+```
+
+## Documentation
+
+- `ARCHITECTURE.md`
+- `CONTRIBUTING.md`
+- `SECURITY.md`
+- `TROUBLESHOOTING.md`
+- `docs/PACKAGING.md`
 
 ## License
 
-GPL-2.0-or-later. Protocol knowledge from libratbag (MIT) and Solaar (GPLv2).
+GPL-2.0-or-later. Protocol research references include libratbag (MIT) and Solaar (GPLv2).

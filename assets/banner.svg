@@ -1,0 +1,63 @@
+<svg width="1280" height="640" viewBox="0 0 1280 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Open G Hub Banner</title>
+  <desc id="desc">Open G Hub project banner with HID-inspired visual design</desc>
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#09121A" />
+      <stop offset="55%" stop-color="#0F2433" />
+      <stop offset="100%" stop-color="#122F2D" />
+    </linearGradient>
+
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#34D399" />
+      <stop offset="100%" stop-color="#22D3EE" />
+    </linearGradient>
+
+    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse">
+      <path d="M 36 0 L 0 0 0 36" fill="none" stroke="#9CA3AF" stroke-opacity="0.08" stroke-width="1"/>
+    </pattern>
+
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="24" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1280" height="640" fill="url(#bg)" />
+  <rect width="1280" height="640" fill="url(#grid)" />
+
+  <circle cx="1010" cy="110" r="190" fill="#22D3EE" fill-opacity="0.14" filter="url(#softGlow)" />
+  <circle cx="180" cy="560" r="230" fill="#34D399" fill-opacity="0.10" filter="url(#softGlow)" />
+
+  <g opacity="0.9">
+    <rect x="740" y="210" width="380" height="220" rx="16" fill="#0B1B28" stroke="#34D399" stroke-opacity="0.55" />
+    <rect x="772" y="246" width="58" height="58" rx="10" fill="#112D3C" stroke="#22D3EE" stroke-opacity="0.7" />
+    <rect x="844" y="246" width="58" height="58" rx="10" fill="#112D3C" stroke="#22D3EE" stroke-opacity="0.7" />
+    <rect x="916" y="246" width="58" height="58" rx="10" fill="#112D3C" stroke="#22D3EE" stroke-opacity="0.7" />
+    <rect x="988" y="246" width="58" height="58" rx="10" fill="#112D3C" stroke="#22D3EE" stroke-opacity="0.7" />
+
+    <rect x="772" y="322" width="274" height="22" rx="8" fill="#133548" />
+    <rect x="772" y="358" width="210" height="22" rx="8" fill="#133548" />
+    <rect x="772" y="394" width="146" height="22" rx="8" fill="#133548" />
+  </g>
+
+  <text x="88" y="228" fill="#E5F3FF" font-size="88" font-family="Segoe UI, Inter, Arial, sans-serif" font-weight="700">Open G Hub</text>
+  <text x="90" y="288" fill="#B9D7E8" font-size="32" font-family="Segoe UI, Inter, Arial, sans-serif" font-weight="500">Open-source Logitech mouse configuration</text>
+
+  <rect x="90" y="332" width="452" height="8" rx="4" fill="url(#accent)" />
+
+  <g fill="#C8E6F6" font-size="25" font-family="Consolas, SFMono-Regular, Menlo, monospace">
+    <text x="90" y="390">HID++ 2.0</text>
+    <text x="90" y="430">DPI | Polling Rate | Button Remap</text>
+    <text x="90" y="470">Windows + Linux</text>
+  </g>
+
+  <g transform="translate(90, 518)">
+    <rect width="286" height="60" rx="12" fill="#0B1F2A" stroke="#22D3EE" stroke-opacity="0.65" />
+    <text x="24" y="39" fill="#D9F3FF" font-size="23" font-family="Segoe UI, Inter, Arial, sans-serif" font-weight="600">Sharper-Flow</text>
+  </g>
+</svg>
