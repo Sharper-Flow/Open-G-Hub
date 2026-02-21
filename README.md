@@ -9,6 +9,10 @@
   <a href="https://github.com/Sharper-Flow/Open-G-Hub/blob/main/LICENSE">
     <img src="https://img.shields.io/github/license/Sharper-Flow/Open-G-Hub" alt="License" />
   </a>
+  <a href="https://github.com/Sharper-Flow/Open-G-Hub/actions/workflows/codeql.yml">
+    <img src="https://img.shields.io/github/actions/workflow/status/Sharper-Flow/Open-G-Hub/codeql.yml?branch=main&label=CodeQL" alt="CodeQL status" />
+  </a>
+  <img src="https://img.shields.io/badge/Core%20Coverage-%E2%89%A590%25-success" alt="Core coverage at least 90 percent" />
   <img src="https://img.shields.io/badge/Rust-2021-000000?logo=rust" alt="Rust 2021" />
   <img src="https://img.shields.io/badge/Platforms-Windows%20%7C%20Linux-2ea44f" alt="Windows and Linux" />
 </p>
@@ -70,7 +74,13 @@ Trust and source references:
 - Zadig source code: [github.com/pbatard/zadig](https://github.com/pbatard/zadig)
 - libwdi (driver backend): [github.com/pbatard/libwdi](https://github.com/pbatard/libwdi)
 
-Quick setup (PowerShell as Administrator):
+Quick setup (Windows batch launcher, run as Administrator):
+
+```bat
+scripts\install-winusb-driver.bat
+```
+
+Or directly via PowerShell:
 
 ```powershell
 .\scripts\install-winusb-driver.ps1
@@ -111,6 +121,7 @@ More detail: `ARCHITECTURE.md`
 cargo test
 cargo clippy -- -D warnings
 cargo fmt --all -- --check
+cargo llvm-cov -p open-g-hub-core --fail-under-lines 90 --summary-only
 ```
 
 For tracing:
@@ -129,4 +140,4 @@ RUST_LOG=trace cargo run -p open-g-hub-cli -- list-devices
 
 ## License
 
-GPL-2.0-or-later. Protocol research references include libratbag (MIT) and Solaar (GPLv2).
+MIT. Protocol research references include libratbag (MIT) and Solaar (GPLv2).

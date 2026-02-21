@@ -1,4 +1,13 @@
 /target
-Cargo.lock
 *.swp
 *.swo
+
+# Editor and OS files
+.DS_Store
+.idea/
+.vscode/
+
+# Coverage artifacts
+coverage/
+lcov.info
+codecov.json

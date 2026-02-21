@@ -33,8 +33,40 @@ jobs:
       - name: Clippy
         run: cargo clippy --workspace -- -D warnings
 
-  release:
+  coverage:
     needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: llvm-tools-preview
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-llvm-cov
+      - name: Coverage gate (core >= 90%)
+        run: cargo llvm-cov -p open-g-hub-core --fail-under-lines 90 --summary-only
+
+  security:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Gitleaks secret scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-audit
+      - name: Generate lockfile
+        run: cargo generate-lockfile
+      - name: Cargo audit
+        run: cargo audit
+
+  release:
+    needs: [test, coverage, security]
     if: github.ref == 'refs/heads/main'
     strategy:
       matrix:
