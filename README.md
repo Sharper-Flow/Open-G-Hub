@@ -7,7 +7,7 @@
     <img src="https://img.shields.io/github/actions/workflow/status/Sharper-Flow/Open-G-Hub/ci.yml?branch=main&label=CI" alt="CI status" />
   </a>
   <a href="https://github.com/Sharper-Flow/Open-G-Hub/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/Sharper-Flow/Open-G-Hub" alt="License" />
+    <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License" />
   </a>
   <a href="https://github.com/Sharper-Flow/Open-G-Hub/actions/workflows/codeql.yml">
     <img src="https://img.shields.io/github/actions/workflow/status/Sharper-Flow/Open-G-Hub/codeql.yml?branch=main&label=CodeQL" alt="CodeQL status" />

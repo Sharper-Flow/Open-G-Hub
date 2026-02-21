@@ -17,10 +17,6 @@ jobs:
   analyze:
     name: Analyze (CodeQL)
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        language: ["actions", "javascript", "python"]
 
     steps:
       - name: Checkout repository
@@ -29,10 +25,7 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
-          languages: ${{ matrix.language }}
-
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
+          languages: actions
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
