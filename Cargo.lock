@@ -2424,6 +2424,7 @@ dependencies = [
 name = "open-g-hub-gui"
 version = "0.1.0"
 dependencies = [
+ "hidapi",
  "iced",
  "open-g-hub-core",
  "tokio",

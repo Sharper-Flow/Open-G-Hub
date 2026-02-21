@@ -41,6 +41,7 @@
 - DPI configuration (`100-25,600`, step `50`) via `ADJUSTABLE_DPI (0x2201)`
 - Polling rate control (`125/250/500/1000 Hz`) via `REPORT_RATE (0x8060)`
 - Button remapping (`6` programmable buttons) via `REPROG_CONTROLS_V4 (0x1B04)`
+- Custom per-button keybinding via raw HID++ CID input in GUI
 - Onboard profile mode/control via `ONBOARD_PROFILES (0x8100)`
 - Structured diagnostics with `tracing` and `RUST_LOG`
 

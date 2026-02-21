@@ -162,11 +162,52 @@ pub fn write_button_mapping(
     let feature_idx =
         lookup_feature_index(transport, device_index, hidpp::features::REPROG_CONTROLS_V4)?;
 
+    let remap_cid = action_to_cid(action);
+
+    write_button_mapping_cid_with_feature(
+        transport,
+        device_index,
+        feature_idx,
+        button_index,
+        remap_cid,
+    )
+}
+
+/// Write a button remapping using a raw HID++ Control ID.
+///
+/// This enables advanced keybinding workflows where users provide a custom
+/// destination CID (for example, a keyboard key CID discovered from another
+/// profile/tooling workflow).
+pub fn write_button_mapping_cid(
+    transport: &dyn HidTransport,
+    device_index: u8,
+    button_index: usize,
+    remap_cid: u16,
+) -> Result<()> {
+    safety::validate_button_index(button_index)?;
+
+    let feature_idx =
+        lookup_feature_index(transport, device_index, hidpp::features::REPROG_CONTROLS_V4)?;
+
+    write_button_mapping_cid_with_feature(
+        transport,
+        device_index,
+        feature_idx,
+        button_index,
+        remap_cid,
+    )
+}
+
+fn write_button_mapping_cid_with_feature(
+    transport: &dyn HidTransport,
+    device_index: u8,
+    feature_idx: u8,
+    button_index: usize,
+    remap_cid: u16,
+) -> Result<()> {
     // Get the CID for this button index
     let info =
         read_control_info_with_feature(transport, device_index, feature_idx, button_index as u8)?;
-
-    let remap_cid = action_to_cid(action);
 
     // setControlReporting: function 3
     // params: CID[0..1], flags(0x10=remap), remap_CID[0..1]
@@ -363,5 +404,37 @@ mod tests {
         );
 
         write_button_mapping(&mock, DEV_IDX, 1, ButtonAction::Back).unwrap();
+    }
+
+    #[test]
+    fn write_button_mapping_cid_sends_raw_cid() {
+        let mock = MockTransport::new();
+        setup_button_feature_lookup(&mock);
+
+        // getControlInfo for index 2: CID=0x0052 (middle click)
+        mock.on_long_request(
+            DEV_IDX,
+            BTN_FEATURE_IDX,
+            0x11,
+            &[0x02],
+            &[
+                0x00, 0x52, 0x00, 0x3A, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00,
+            ],
+        );
+
+        // setControlReporting: remap CID 0x0052 to custom CID 0x0065
+        mock.on_long_request(
+            DEV_IDX,
+            BTN_FEATURE_IDX,
+            0x31,
+            &[0x00, 0x52, 0x10, 0x00, 0x65],
+            &[
+                0x00, 0x52, 0x10, 0x00, 0x65, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00,
+            ],
+        );
+
+        write_button_mapping_cid(&mock, DEV_IDX, 2, 0x0065).unwrap();
     }
 }
